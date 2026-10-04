@@ -1,0 +1,1253 @@
+/* ==========================================================================
+   2026 친절한 문정쌤과 준오쌤의 깃헙 나라 여행 - Style System
+   - 테마: 네오 브루탈리즘 (Neo-Brutalism) + 3D 이머시브 깃헙 웹 투어
+   - 특징: 두꺼운 블랙 테두리, 하드 섀도우, 비비드 팝 컬러, 극대화된 가독성/시인성
+   ========================================================================== */
+
+:root {
+  /* 네오 브루탈리즘 핵심 컬러 */
+  --bg-retro: #faf7ee;
+  --brutal-black: #000000;
+  --brutal-white: #ffffff;
+  
+  --color-yellow: #ffe600;
+  --color-pink: #ff66b2;
+  --color-cyan: #00d2ff;
+  --color-green: #00f076;
+  --color-purple: #b388ff;
+  --color-orange: #ff5722;
+  --color-red: #ff334b;
+  --color-gray-light: #f0ede4;
+
+  /* 테두리 및 하드 그림자 */
+  --border-thick: 3px solid var(--brutal-black);
+  --border-heavy: 4px solid var(--brutal-black);
+  --shadow-base: 5px 5px 0px var(--brutal-black);
+  --shadow-lg: 8px 8px 0px var(--brutal-black);
+  --shadow-sm: 3px 3px 0px var(--brutal-black);
+  --shadow-pressed: 1px 1px 0px var(--brutal-black);
+
+  /* 타이포그래피 */
+  --font-sans: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* 모션 */
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-fast: all 0.15s ease-out;
+}
+
+/* Reset & 전역 레이아웃 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--bg-retro);
+  color: var(--brutal-black);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.5;
+  user-select: none;
+}
+
+/* 3D WebGL 캔버스 레이어 */
+#webgl-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1;
+  background: radial-gradient(circle at 50% 50%, #fdfbf7 0%, #ede8dc 100%);
+  cursor: grab;
+}
+
+#webgl-container:active {
+  cursor: grabbing;
+}
+
+/* 네오 브루탈리즘 공통 컴포넌트 */
+.brutal-box {
+  background: var(--brutal-white);
+  border: var(--border-heavy);
+  box-shadow: var(--shadow-base);
+  border-radius: 12px;
+  position: relative;
+  pointer-events: auto;
+}
+
+.brutal-box.yellow { background: var(--color-yellow); }
+.brutal-box.pink   { background: var(--color-pink); }
+.brutal-box.cyan   { background: var(--color-cyan); }
+.brutal-box.green  { background: var(--color-green); }
+.brutal-box.purple { background: var(--color-purple); }
+.brutal-box.white  { background: var(--brutal-white); }
+
+/* 네오 브루탈리즘 공통 버튼 */
+.brutal-btn {
+  background: var(--brutal-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+  color: var(--brutal-black);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 800;
+  padding: 8px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  text-decoration: none;
+}
+
+.brutal-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px var(--brutal-black);
+}
+
+.brutal-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-pressed);
+}
+
+.brutal-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.brutal-btn.yellow { background: var(--color-yellow); }
+.brutal-btn.green  { background: var(--color-green); }
+.brutal-btn.cyan   { background: var(--color-cyan); }
+.brutal-btn.pink   { background: var(--color-pink); }
+.brutal-btn.red    { background: var(--color-red); color: #fff; }
+.brutal-btn.white  { background: var(--brutal-white); }
+
+.brutal-btn.icon-only {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   1. 상단 글로벌 네비게이션 헤더
+   ========================================================================== */
+#main-header {
+  position: absolute;
+  top: 18px;
+  left: 20px;
+  right: 20px;
+  height: 72px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  background: var(--brutal-white);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.logo-sticker {
+  width: 46px;
+  height: 46px;
+  background: var(--color-yellow);
+  border: var(--border-thick);
+  box-shadow: 3px 3px 0px #000;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  color: var(--brutal-black);
+  transform: rotate(-3deg);
+  transition: transform 0.2s;
+}
+
+.logo-sticker:hover {
+  transform: rotate(6deg) scale(1.1);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.sticker-badge {
+  font-size: 10.5px;
+  font-weight: 900;
+  letter-spacing: 0.8px;
+  padding: 2px 8px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px #000;
+  width: fit-content;
+  margin-bottom: 2px;
+}
+
+.sticker-badge.yellow { background: var(--color-yellow); }
+
+.brand-text .title {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.4px;
+  color: var(--brutal-black);
+}
+
+/* 게이지 바 */
+.progress-box {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  gap: 5px;
+}
+
+.progress-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.prog-label i {
+  color: var(--color-orange);
+}
+
+.prog-val {
+  color: var(--brutal-black);
+  background: var(--color-green);
+  padding: 1px 6px;
+  border: 2px solid #000;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+.brutal-track {
+  width: 100%;
+  height: 14px;
+  background: var(--brutal-white);
+  border: 2.5px solid #000;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.brutal-fill {
+  width: 20%;
+  height: 100%;
+  background: var(--color-green);
+  border-right: 2px solid #000;
+  transition: width 0.4s var(--ease-bounce);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ==========================================================================
+   2. 좌측 깃헙 페이지 코스 도크 (5대 핵심 웹 페이지)
+   ========================================================================== */
+#page-nav-dock {
+  position: absolute;
+  left: 20px;
+  top: 108px;
+  width: 240px;
+  padding: 14px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--color-gray-light);
+}
+
+.dock-title-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13.5px;
+  font-weight: 900;
+  padding-bottom: 8px;
+  border-bottom: 2.5px solid #000;
+}
+
+.page-count-badge {
+  background: var(--color-yellow);
+  border: 2px solid #000;
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.page-step-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.page-step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--brutal-white);
+  border: var(--border-thick);
+  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.page-step-item:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000;
+}
+
+.page-step-item.active {
+  background: var(--color-yellow);
+  transform: translate(-3px, -3px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+.step-badge {
+  width: 26px;
+  height: 26px;
+  border: 2px solid #000;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+  font-family: var(--font-mono);
+}
+
+.step-badge.green  { background: var(--color-green); }
+.step-badge.yellow { background: var(--color-yellow); }
+.step-badge.pink   { background: var(--color-pink); }
+.step-badge.cyan   { background: var(--color-cyan); }
+.step-badge.purple { background: var(--color-purple); }
+
+.step-meta {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.step-meta .page-name {
+  font-size: 13px;
+  font-weight: 900;
+  color: #000;
+}
+
+.step-meta .url-chip {
+  font-size: 10.5px;
+  font-family: var(--font-mono);
+  color: #555;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   3. 메인 인터랙티브 깃헙 탐험 카드 (Neobrutalism Main Card)
+   ========================================================================== */
+#stage-card-wrapper {
+  position: absolute;
+  right: 20px;
+  top: 108px;
+  width: 530px;
+  max-height: calc(100vh - 210px);
+  z-index: 10;
+}
+
+.main-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  max-height: inherit;
+  box-shadow: var(--shadow-lg);
+}
+
+.card-top-bar {
+  padding: 18px 22px 14px;
+  background: var(--brutal-white);
+  border-bottom: var(--border-heavy);
+}
+
+.stage-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tag-pill {
+  background: var(--brutal-black);
+  color: var(--color-yellow);
+  font-size: 11px;
+  font-weight: 900;
+  padding: 3px 10px;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.url-pill {
+  background: var(--color-cyan);
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+}
+
+.card-main-title {
+  font-size: 21px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+  line-height: 1.3;
+}
+
+.card-desc {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #444;
+  line-height: 1.45;
+}
+
+/* 탭 바 */
+.card-tabs-row {
+  display: flex;
+  background: var(--color-gray-light);
+  border-bottom: var(--border-heavy);
+  padding: 8px 12px;
+  gap: 8px;
+}
+
+.tab-btn {
+  flex: 1;
+  background: var(--brutal-white);
+  border: 2.5px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  border-radius: 8px;
+  padding: 8px 4px;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.tab-btn:hover {
+  background: #fdfdfd;
+  transform: translate(-1px, -1px);
+}
+
+.tab-btn.active {
+  background: var(--color-pink);
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px #000;
+}
+
+/* 탭 스크롤 영역 */
+.card-body-scroll {
+  padding: 18px 20px;
+  overflow-y: auto;
+  flex: 1;
+  background: var(--brutal-white);
+  max-height: calc(100vh - 430px);
+}
+
+.tab-content-panel {
+  display: none;
+}
+
+.tab-content-panel.active {
+  display: block;
+  animation: brutalPop 0.2s var(--ease-bounce);
+}
+
+@keyframes brutalPop {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* 1. 가이드 텍스트 */
+.guide-text-content {
+  font-size: 14.5px;
+  line-height: 1.65;
+  font-weight: 600;
+  color: #111;
+}
+
+.guide-text-content p {
+  margin-bottom: 12px;
+}
+
+.guide-text-content strong {
+  background: var(--color-yellow);
+  padding: 0 4px;
+  border-radius: 4px;
+  border: 1.5px solid #000;
+}
+
+.feature-pills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.feat-item {
+  background: var(--color-gray-light);
+  border: 2.5px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  border-radius: 8px;
+  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.feat-key-tag {
+  background: var(--brutal-black);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: 5px;
+  white-space: nowrap;
+}
+
+.feat-text {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* 2. 인터랙티브 Mock Browser UI */
+.mock-browser-window {
+  background: #ffffff;
+  border: var(--border-heavy);
+  box-shadow: var(--shadow-sm);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mock-browser-header {
+  background: var(--color-gray-light);
+  border-bottom: 2.5px solid #000;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mock-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.mock-dot {
+  width: 10px;
+  height: 10px;
+  border: 1.5px solid #000;
+  border-radius: 50%;
+}
+
+.mock-dot.red { background: var(--color-red); }
+.mock-dot.yellow { background: var(--color-yellow); }
+.mock-dot.green { background: var(--color-green); }
+
+.mock-url-bar {
+  flex: 1;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 6px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: #333;
+}
+
+.mock-browser-body {
+  padding: 14px;
+}
+
+/* Mock UI 세부 요소들 */
+.mock-gh-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mock-gh-btn {
+  background: var(--color-gray-light);
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.mock-gh-btn:hover {
+  background: var(--color-yellow);
+}
+
+.mock-gh-btn.starred {
+  background: var(--color-yellow);
+}
+
+.mock-readme-card {
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fafafa;
+}
+
+.mock-readme-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 12px;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+/* 잔디밭(Contribution Graph) Mock UI */
+.grass-grid {
+  display: grid;
+  grid-template-columns: repeat(14, 1fr);
+  gap: 4px;
+  background: #fafafa;
+  padding: 10px;
+  border: 2px solid #000;
+  border-radius: 8px;
+}
+
+.grass-tile {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #ebedf0;
+  border: 1px solid #000;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: transform 0.1s;
+}
+
+.grass-tile:hover {
+  transform: scale(1.2);
+}
+
+.grass-tile.lvl-1 { background: #9be9a8; }
+.grass-tile.lvl-2 { background: #40c463; }
+.grass-tile.lvl-3 { background: #30a14e; }
+.grass-tile.lvl-4 { background: #216e39; }
+
+/* 3. 쌤들의 한마디 */
+.mentors-speech-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.speech-bubble-card {
+  padding: 14px;
+}
+
+.speech-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.avatar-badge {
+  font-size: 26px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.speaker-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.speaker-name {
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.speaker-role {
+  font-size: 11px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+.speech-text {
+  font-size: 13.5px;
+  line-height: 1.6;
+  font-weight: 700;
+  background: #fff;
+  border: 2px solid #000;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+/* 4. 관문 퀴즈 */
+.quiz-box {
+  padding: 16px;
+}
+
+.quiz-badge {
+  display: inline-block;
+  background: #000;
+  color: var(--color-yellow);
+  font-size: 10px;
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.quiz-question-title {
+  font-size: 15.5px;
+  font-weight: 900;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.quiz-choices-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.quiz-btn {
+  background: #fff;
+  border: 2.5px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 800;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  transition: var(--transition-fast);
+}
+
+.quiz-btn:hover {
+  background: #fdfdfd;
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0px #000;
+}
+
+.quiz-btn.correct {
+  background: var(--color-green) !important;
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px #000;
+}
+
+.quiz-btn.wrong {
+  background: var(--color-red) !important;
+  color: #fff !important;
+}
+
+.quiz-result-msg {
+  background: #fff;
+  border: 2px solid #000;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 800;
+}
+
+/* 카드 하단 푸터 바 */
+.card-bottom-bar {
+  padding: 14px 20px;
+  background: var(--color-gray-light);
+  border-top: var(--border-heavy);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step-nav-group {
+  display: flex;
+  gap: 8px;
+}
+
+.stamp-btn {
+  font-size: 12.5px;
+}
+
+/* ==========================================================================
+   4. 하단 멘토 실시간 무전 교신 위젯 (Neobrutalism Walkie-Talkie)
+   ========================================================================== */
+#mentor-walkie {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  width: 480px;
+  padding: 12px 16px;
+  z-index: 10;
+  background: var(--color-yellow);
+  box-shadow: var(--shadow-base);
+}
+
+.walkie-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #000;
+  padding-bottom: 6px;
+  margin-bottom: 8px;
+}
+
+.live-indicator {
+  font-size: 11px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.blink-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-red);
+  border: 1px solid #000;
+  border-radius: 50%;
+  animation: brutalBlink 1s infinite;
+}
+
+@keyframes brutalBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+.mini-btn {
+  background: #fff;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  border-radius: 6px;
+  padding: 2px 8px;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.mini-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
+}
+
+.walkie-message-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.walkie-avatar {
+  font-size: 28px;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 8px;
+  padding: 2px 6px;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.walkie-text-wrap {
+  flex: 1;
+}
+
+.walkie-author {
+  font-size: 12px;
+  font-weight: 900;
+  background: #fff;
+  border: 1.5px solid #000;
+  padding: 1px 6px;
+  border-radius: 4px;
+  display: inline-block;
+  margin-bottom: 2px;
+}
+
+.walkie-content {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+  color: #000;
+}
+
+/* ==========================================================================
+   5. 3D 호버 툴팁 & 하단 도움말
+   ========================================================================== */
+.tooltip-box {
+  position: absolute;
+  z-index: 50;
+  pointer-events: none;
+  background: var(--color-yellow);
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: var(--border-thick);
+  box-shadow: var(--shadow-sm);
+  transform: translate(-50%, -120%);
+  opacity: 0;
+  transition: opacity 0.15s;
+  display: flex;
+  flex-direction: column;
+}
+
+.tooltip-box.visible {
+  opacity: 1;
+}
+
+.tip-badge {
+  font-size: 9px;
+  font-weight: 900;
+  background: #000;
+  color: #fff;
+  padding: 1px 4px;
+  border-radius: 3px;
+  width: fit-content;
+}
+
+.tip-name {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.tip-desc {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.bottom-helper-chip {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 10;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bottom-helper-chip .bar {
+  opacity: 0.4;
+}
+
+/* ==========================================================================
+   6. 네오 브루탈리즘 수료증 모달 (Certificate Modal)
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-backdrop.hidden {
+  display: none;
+}
+
+.cert-modal-card {
+  width: 740px;
+  max-width: 94vw;
+  background: var(--color-yellow);
+  border: var(--border-heavy);
+  box-shadow: var(--shadow-lg);
+  padding: 26px;
+  position: relative;
+}
+
+.modal-close-corner {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 18px;
+}
+
+.cert-paper {
+  background: #fff;
+  border: var(--border-heavy);
+  box-shadow: 4px 4px 0px #000;
+  padding: 24px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+}
+
+.cert-logo-seal {
+  width: 56px;
+  height: 56px;
+  background: var(--color-yellow);
+  border: var(--border-thick);
+  box-shadow: 3px 3px 0px #000;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  margin: 0 auto 8px;
+}
+
+.cert-sub-tag {
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  background: #000;
+  color: #fff;
+  padding: 2px 10px;
+  border-radius: 4px;
+}
+
+.cert-hero-title {
+  font-size: 28px;
+  font-weight: 900;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  letter-spacing: -0.5px;
+}
+
+.cert-proclamation {
+  font-size: 14.5px;
+  font-weight: 700;
+  line-height: 1.7;
+  color: #222;
+  margin-bottom: 16px;
+}
+
+.cert-name-input-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border: 2.5px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.name-label {
+  font-size: 13px;
+  font-weight: 900;
+}
+
+#cert-user-name {
+  border: none;
+  border-bottom: 2px solid #000;
+  font-size: 16px;
+  font-weight: 900;
+  font-family: inherit;
+  text-align: center;
+  outline: none;
+  background: transparent;
+  width: 150px;
+}
+
+.cert-stickers-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.sticker-chip {
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  font-size: 11px;
+  font-weight: 900;
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+.sticker-chip.green  { background: var(--color-green); }
+.sticker-chip.yellow { background: var(--color-yellow); }
+.sticker-chip.pink   { background: var(--color-pink); }
+.sticker-chip.cyan   { background: var(--color-cyan); }
+.sticker-chip.purple { background: var(--color-purple); }
+
+.cert-footer-block {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  border-top: 2.5px solid #000;
+  padding-top: 14px;
+  margin-top: 8px;
+}
+
+.cert-issue-info {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.cert-date {
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 800;
+}
+
+.cert-org {
+  font-size: 11px;
+  font-weight: 900;
+  color: #555;
+}
+
+.cert-mentor-stamps {
+  display: flex;
+  gap: 12px;
+}
+
+.stamp-unit {
+  padding: 6px 12px;
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stamp-who {
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.stamp-mark {
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.cert-actions-row {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.big-btn {
+  padding: 12px 24px;
+  font-size: 14px;
+}
+
+/* ==========================================================================
+   7. 반응형 미디어 쿼리
+   ========================================================================== */
+@media (max-width: 1200px) {
+  #stage-card-wrapper {
+    width: 460px;
+  }
+  #page-nav-dock {
+    width: 200px;
+  }
+}
+
+@media (max-width: 900px) {
+  #main-header {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    padding: 0 12px;
+    height: 60px;
+  }
+  .brand-text .title {
+    font-size: 14px;
+  }
+  .progress-box {
+    display: none;
+  }
+  #page-nav-dock {
+    display: none;
+  }
+  #stage-card-wrapper {
+    left: 10px;
+    right: 10px;
+    width: auto;
+    top: 78px;
+    max-height: calc(100vh - 150px);
+  }
+  #mentor-walkie {
+    display: none;
+  }
+  .bottom-helper-chip {
+    display: none;
+  }
+}
+
+/* 인쇄용 모드 */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #certificate-modal, #cert-printable-area, #cert-printable-area * {
+    visibility: visible;
+  }
+  #certificate-modal {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: transparent;
+  }
+  .cert-modal-card {
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+  .modal-close-corner, .cert-actions-row {
+    display: none !important;
+  }
+}

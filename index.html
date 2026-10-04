@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 친절한 문정쌤과 준오쌤의 깃헙 나라 여행 | 네오 브루탈리즘 3D 탐험</title>
+  
+  <!-- Pretendard 가독성 최우선 한국어 폰트 -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="neobrutal-body">
+  <!-- 3D WebGL 캔버스 컨테이너 (네오 브루탈리스트 3D 월드) -->
+  <div id="webgl-container"></div>
+
+  <!-- 상단 글로벌 네비게이션 헤더 (Neo-Brutalism Style) -->
+  <header id="main-header" class="brutal-box header-box">
+    <div class="brand">
+      <div class="logo-sticker">
+        <i class="fa-brands fa-github"></i>
+      </div>
+      <div class="brand-text">
+        <span class="sticker-badge yellow">2026 GITHUB TOUR</span>
+        <h1 class="title">친절한 문정쌤과 준오쌤의 깃헙 나라 여행</h1>
+      </div>
+    </div>
+
+    <!-- 탐험 진행도 바 (브루탈리스트 게이지) -->
+    <div class="progress-box">
+      <div class="progress-header">
+        <span class="prog-label"><i class="fa-solid fa-map-location-dot"></i> 깃헙 웹 탐험도</span>
+        <span class="prog-val" id="expedition-progress-text">0% 완료</span>
+      </div>
+      <div class="brutal-track">
+        <div class="brutal-fill" id="expedition-progress-bar"></div>
+      </div>
+    </div>
+
+    <!-- 우측 헤더 액션 버튼들 -->
+    <div class="header-actions">
+      <button id="btn-audio-toggle" class="brutal-btn icon-only" title="효과음 켜기/끄기" aria-label="오디오 토글">
+        <i class="fa-solid fa-volume-xmark"></i>
+      </button>
+      <button id="btn-tour-auto" class="brutal-btn cyan" title="5대 페이지 자동 투어">
+        <i class="fa-solid fa-play"></i> <span>자동 투어</span>
+      </button>
+      <button id="btn-view-mode" class="brutal-btn yellow" title="3D 공간 자유 탐험">
+        <i class="fa-solid fa-cube"></i> <span>자유 3D 시점</span>
+      </button>
+      <button id="btn-open-cert-direct" class="brutal-btn pink" title="수료증 미리보기">
+        <i class="fa-solid fa-award"></i> <span>수료증</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 좌측 깃헙 페이지 코스 도크 (5대 핵심 GitHub 페이지) -->
+  <nav id="page-nav-dock" class="brutal-box dock-box">
+    <div class="dock-title-bar">
+      <span><i class="fa-solid fa-compass"></i> 탐험 코스</span>
+      <span class="page-count-badge">5 STAGES</span>
+    </div>
+    <ul class="page-step-list">
+      <li class="page-step-item active" data-stage="0">
+        <span class="step-badge green">01</span>
+        <div class="step-meta">
+          <strong class="page-name">리포지토리 광장</strong>
+          <span class="url-chip">github.com/.../code</span>
+        </div>
+      </li>
+      <li class="page-step-item" data-stage="1">
+        <span class="step-badge yellow">02</span>
+        <div class="step-meta">
+          <strong class="page-name">이슈 게시판 마을</strong>
+          <span class="url-chip">/issues</span>
+        </div>
+      </li>
+      <li class="page-step-item" data-stage="2">
+        <span class="step-badge pink">03</span>
+        <div class="step-meta">
+          <strong class="page-name">풀 리퀘스트 성채</strong>
+          <span class="url-chip">/pulls & reviews</span>
+        </div>
+      </li>
+      <li class="page-step-item" data-stage="3">
+        <span class="step-badge cyan">04</span>
+        <div class="step-meta">
+          <strong class="page-name">액션스 자동화 기지</strong>
+          <span class="url-chip">/actions CI/CD</span>
+        </div>
+      </li>
+      <li class="page-step-item" data-stage="4">
+        <span class="step-badge purple">05</span>
+        <div class="step-meta">
+          <strong class="page-name">프로필 & 디스커션</strong>
+          <span class="url-chip">/discussions & 잔디</span>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- 우측 메인 인터랙티브 깃헙 탐험 카드 (Neobrutalism Main Card) -->
+  <main id="stage-card-wrapper">
+    <article class="brutal-box main-card">
+      
+      <!-- 카드 헤더 영역 -->
+      <div class="card-top-bar">
+        <div class="stage-tag-row">
+          <span class="tag-pill" id="card-stage-code">STAGE 01</span>
+          <span class="url-pill" id="card-stage-url"><i class="fa-solid fa-link"></i> github.com/user/project</span>
+        </div>
+        <h2 class="card-main-title" id="card-stage-title">리포지토리 광장 : 코드의 보물창고를 열다</h2>
+        <p class="card-desc" id="card-stage-subtitle">README를 읽고 파일을 브라우징하며 Star와 Fork로 응원하는 첫 관문</p>
+      </div>
+
+      <!-- 카드 탭 네비게이션 -->
+      <div class="card-tabs-row">
+        <button class="tab-btn active" data-tab="guide"><i class="fa-solid fa-book"></i> 페이지 가이드</button>
+        <button class="tab-btn" data-tab="preview"><i class="fa-solid fa-desktop"></i> 화면 체험 (Mock UI)</button>
+        <button class="tab-btn" data-tab="mentors"><i class="fa-solid fa-comments"></i> 쌤들의 꿀팁</button>
+        <button class="tab-btn" data-tab="quiz"><i class="fa-solid fa-circle-question"></i> 관문 퀴즈</button>
+      </div>
+
+      <!-- 탭 컨텐츠 바디 -->
+      <div class="card-body-scroll">
+        
+        <!-- 1. 페이지 가이드 패널 -->
+        <div id="tab-pane-guide" class="tab-content-panel active">
+          <div class="guide-text-content" id="guide-text-html">
+            <!-- JS 동적 주입 -->
+          </div>
+          <div class="feature-pills-list" id="guide-features-html">
+            <!-- 주요 버튼 / 기능 설명 뱃지 -->
+          </div>
+        </div>
+
+        <!-- 2. 화면 체험 (인터랙티브 GitHub Mock UI) 패널 -->
+        <div id="tab-pane-preview" class="tab-content-panel">
+          <div class="mock-browser-window brutal-box">
+            <div class="mock-browser-header">
+              <div class="mock-dots">
+                <span class="mock-dot red"></span>
+                <span class="mock-dot yellow"></span>
+                <span class="mock-dot green"></span>
+              </div>
+              <div class="mock-url-bar" id="mock-browser-url">
+                https://github.com/moonjeong-juno/2026-github-kingdom
+              </div>
+            </div>
+            <div class="mock-browser-body" id="mock-preview-content">
+              <!-- 각 스테이지별 GitHub 페이지 인터랙티브 Mock UI 동적 주입 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. 쌤들의 한마디 패널 -->
+        <div id="tab-pane-mentors" class="tab-content-panel">
+          <div class="mentors-speech-grid">
+            <div class="speech-bubble-card brutal-box pink">
+              <div class="speech-header">
+                <div class="avatar-badge">👩‍🏫</div>
+                <div class="speaker-meta">
+                  <span class="speaker-name">친절한 문정쌤</span>
+                  <span class="speaker-role">GitHub 입문 & 소통 가이드</span>
+                </div>
+              </div>
+              <p class="speech-text" id="speech-moonjeong-text">
+                <!-- 텍스트 주입 -->
+              </p>
+            </div>
+
+            <div class="speech-bubble-card brutal-box cyan">
+              <div class="speech-header">
+                <div class="avatar-badge">👨‍💻</div>
+                <div class="speaker-meta">
+                  <span class="speaker-name">열정의 준오쌤</span>
+                  <span class="speaker-role">GitHub 웹 생산성 치트키</span>
+                </div>
+              </div>
+              <p class="speech-text" id="speech-juno-text">
+                <!-- 텍스트 주입 -->
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. 관문 퀴즈 패널 -->
+        <div id="tab-pane-quiz" class="tab-content-panel">
+          <div class="quiz-box brutal-box yellow">
+            <div class="quiz-badge">GATEWAY QUIZ</div>
+            <h3 class="quiz-question-title" id="quiz-question-title">Q. 로딩 중...</h3>
+            <div class="quiz-choices-container" id="quiz-choices-container">
+              <!-- 선택지 주입 -->
+            </div>
+            <div class="quiz-result-msg" id="quiz-result-msg">
+              정답을 골라 관문을 통과하세요!
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 카드 하단 조작 푸터 -->
+      <div class="card-bottom-bar">
+        <div class="step-nav-group">
+          <button id="btn-prev-stage" class="brutal-btn white" disabled>
+            <i class="fa-solid fa-arrow-left"></i> 이전 페이지
+          </button>
+          <button id="btn-next-stage" class="brutal-btn green">
+            다음 페이지로 이동 <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+        <button id="btn-complete-stage" class="brutal-btn yellow stamp-btn">
+          <i class="fa-regular fa-square-check"></i> <span>탐험 완료 도장 찍기</span>
+        </button>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- 하단 멘토 실시간 무전 교신 위젯 (Neobrutalist Walkie-Talkie) -->
+  <aside id="mentor-walkie" class="brutal-box walkie-box">
+    <div class="walkie-bar">
+      <span class="live-indicator"><span class="blink-dot"></span> LIVE 멘토 무전</span>
+      <div class="walkie-controls">
+        <button id="btn-walkie-prev" class="mini-btn"><i class="fa-solid fa-backward-step"></i></button>
+        <button id="btn-walkie-next" class="mini-btn"><i class="fa-solid fa-forward-step"></i></button>
+      </div>
+    </div>
+    <div class="walkie-message-row">
+      <span class="walkie-avatar" id="walkie-avatar">👩‍🏫</span>
+      <div class="walkie-text-wrap">
+        <strong class="walkie-author" id="walkie-author">문정쌤</strong>
+        <p class="walkie-content" id="walkie-content">
+          "깃헙 나라에 오신 것을 환영해요! 오늘은 터미널 검은 창이 아니라, 진짜 웹 브라우저에서 마우스로 클릭하며 즐기는 깃헙의 환상적인 세계를 함께 탐험해볼 거예요 🌸"
+        </p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 3D 호버 툴팁 -->
+  <div id="three-hover-tooltip" class="brutal-box tooltip-box">
+    <span class="tip-badge">LANDMARK</span>
+    <strong class="tip-name">리포지토리 광장</strong>
+    <span class="tip-desc">클릭하여 이 페이지로 비행</span>
+  </div>
+
+  <!-- 하단 조작 가이드 -->
+  <div class="bottom-helper-chip brutal-box white">
+    <span><i class="fa-solid fa-mouse"></i> 드래그: 3D 월드 둘러보기</span>
+    <span class="bar">|</span>
+    <span><i class="fa-solid fa-hand-pointer"></i> 3D 건물 클릭: 해당 깃헙 페이지로 워프</span>
+  </div>
+
+  <!-- 2026 깃헙 나라 수료증 모달 (Neo-Brutalism Certificate) -->
+  <div id="certificate-modal" class="modal-backdrop hidden">
+    <div class="brutal-box cert-modal-card">
+      <button class="modal-close-corner brutal-btn red" id="btn-close-cert" aria-label="닫기">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+
+      <!-- 인쇄 가능한 수료증 본문 -->
+      <div class="cert-paper brutal-box" id="cert-printable-area">
+        <div class="cert-decor-stripes"></div>
+
+        <div class="cert-header-block">
+          <div class="cert-logo-seal">
+            <i class="fa-brands fa-github"></i>
+          </div>
+          <span class="cert-sub-tag">2026 OFFICIAL GITHUB EXPEDITION</span>
+          <h2 class="cert-hero-title">깃헙 나라 탐험 수료증</h2>
+        </div>
+
+        <div class="cert-body-block">
+          <p class="cert-proclamation">
+            위 탐험가는 <strong>친절한 문정쌤과 준오쌤의 깃헙 나라 여행</strong>에서<br>
+            GitHub의 5대 핵심 웹 페이지(리포지토리, 이슈, 풀 리퀘스트, 액션스, 커뮤니티 & 잔디)를<br>
+            성공적으로 모두 탐험하고 협업 마스터 자격을 획득하였음을 증명합니다!
+          </p>
+
+          <div class="cert-name-input-box brutal-box white">
+            <span class="name-label">탐험가 성명:</span>
+            <input type="text" id="cert-user-name" value="멋진 깃헙 여행자" maxlength="20" title="이름을 입력하세요" />
+          </div>
+
+          <div class="cert-stickers-row">
+            <span class="sticker-chip green"><i class="fa-solid fa-check"></i> Code & README</span>
+            <span class="sticker-chip yellow"><i class="fa-solid fa-check"></i> Issues & Labels</span>
+            <span class="sticker-chip pink"><i class="fa-solid fa-check"></i> PR & Code Review</span>
+            <span class="sticker-chip cyan"><i class="fa-solid fa-check"></i> Actions CI/CD</span>
+            <span class="sticker-chip purple"><i class="fa-solid fa-check"></i> Profile & 잔디</span>
+          </div>
+        </div>
+
+        <div class="cert-footer-block">
+          <div class="cert-issue-info">
+            <span class="cert-date" id="cert-issue-date">2026. 10. 01</span>
+            <span class="cert-org">GitHub Kingdom Education Team</span>
+          </div>
+
+          <div class="cert-mentor-stamps">
+            <div class="stamp-unit brutal-box pink">
+              <span class="stamp-who">지도교사 문정쌤</span>
+              <strong class="stamp-mark">합격 인증 🌸</strong>
+            </div>
+            <div class="stamp-unit brutal-box cyan">
+              <span class="stamp-who">지도교사 준오쌤</span>
+              <strong class="stamp-mark">탐험 완료 🚀</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cert-actions-row">
+        <button id="btn-print-cert" class="brutal-btn green big-btn"><i class="fa-solid fa-print"></i> 수료증 인쇄 / PDF 저장</button>
+        <button id="btn-share-cert" class="brutal-btn yellow big-btn"><i class="fa-solid fa-share-nodes"></i> 클립보드에 인증 공유</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CDN 의존성 스크립트 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script src="main.js"></script>
+</body>
+</html>
