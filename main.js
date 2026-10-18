@@ -1149,9 +1149,79 @@ class GitHubTourApp {
 }
 
 // ==========================================================================
-// 5. DOM 로드 시 앱 구동
+// 5. Vercel 환경 변수 동적 로더 (Vercel vs GitHub Pages 환경 감지)
+// ==========================================================================
+async function loadEnvironmentConfig() {
+  const schoolEl = document.getElementById('env-school-name');
+  const schoolBadgeEl = document.getElementById('env-school-name-badge');
+  const noticeEl = document.getElementById('env-notice-msg');
+  const tourYearEl = document.getElementById('env-tour-year');
+  const certSchoolEl = document.getElementById('cert-school-name');
+  const certTourYearEl = document.getElementById('cert-tour-year');
+  const modeStatusPill = document.getElementById('env-mode-status');
+  const modeText = document.getElementById('env-mode-text');
+
+  // 기본 정적 값 (GitHub Pages 또는 로컬 환경 기본값)
+  const fallbackConfig = {
+    SCHOOL_NAME: "EBS 디지털 미디어 고등학교",
+    NOTICE_MSG: "📢 [정적 모드] GitHub Pages에서는 정적 기본값으로 동작 중입니다.",
+    TOUR_YEAR: "2026"
+  };
+
+  try {
+    const res = await fetch('/api/config', { cache: 'no-store' });
+    if (!res.ok) {
+      throw new Error(`HTTP 상태 코드 ${res.status}`);
+    }
+    const data = await res.json();
+
+    // 1. SCHOOL_NAME (학교명 / 기관명)
+    const schoolName = data.SCHOOL_NAME || fallbackConfig.SCHOOL_NAME;
+    if (schoolEl) schoolEl.textContent = schoolName;
+    if (schoolBadgeEl) schoolBadgeEl.textContent = schoolName;
+    if (certSchoolEl) certSchoolEl.textContent = schoolName + " Education Team";
+
+    // 2. NOTICE_MSG (상단 배너 실시간 공지사항 문구)
+    const noticeMsg = data.NOTICE_MSG || fallbackConfig.NOTICE_MSG;
+    if (noticeEl) noticeEl.textContent = noticeMsg;
+
+    // 3. TOUR_YEAR (탐험 시즌 / 연도)
+    const tourYear = data.TOUR_YEAR || fallbackConfig.TOUR_YEAR;
+    if (tourYearEl) tourYearEl.textContent = tourYear;
+    if (certTourYearEl) certTourYearEl.textContent = tourYear;
+
+    // Vercel 동적 환경 상태 뱃지 활성화
+    if (modeStatusPill && modeText) {
+      modeStatusPill.className = "env-status-pill dynamic";
+      modeText.innerHTML = '<i class="fa-solid fa-bolt"></i> Vercel 환경 변수 동적 연결됨';
+    }
+    console.log('[Vercel Env] 환경 변수가 성공적으로 로드되었습니다:', data);
+  } catch (error) {
+    // GitHub Pages 또는 정적 호스팅 환경: API 라우트가 없으므로 정적 fallback 적용
+    console.log('[Static Mode] 정적 호스팅(GitHub Pages 등) 환경 감지 - 기본값 유지:', error.message);
+
+    if (schoolEl) schoolEl.textContent = fallbackConfig.SCHOOL_NAME;
+    if (schoolBadgeEl) schoolBadgeEl.textContent = fallbackConfig.SCHOOL_NAME;
+    if (certSchoolEl) certSchoolEl.textContent = fallbackConfig.SCHOOL_NAME + " Education Team";
+    if (noticeEl) noticeEl.textContent = fallbackConfig.NOTICE_MSG;
+    if (tourYearEl) tourYearEl.textContent = fallbackConfig.TOUR_YEAR;
+    if (certTourYearEl) certTourYearEl.textContent = fallbackConfig.TOUR_YEAR;
+
+    if (modeStatusPill && modeText) {
+      modeStatusPill.className = "env-status-pill static";
+      modeText.innerHTML = '<i class="fa-solid fa-cube"></i> GitHub Pages (정적 기본값)';
+    }
+  }
+}
+
+// ==========================================================================
+// 6. DOM 로드 시 앱 구동
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
   const app = new GitHubTourApp();
   window.__gitHubTourApp = app;
+
+  // 환경 변수 비동기 로드
+  loadEnvironmentConfig();
 });
+

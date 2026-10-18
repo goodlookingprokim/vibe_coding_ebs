@@ -69,3 +69,7 @@ build/
 .cache/
 .tmp/
 tmp/
+.vercel
+.env*
+!.env.example
+

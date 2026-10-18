@@ -16,6 +16,21 @@
   <!-- 3D WebGL 캔버스 컨테이너 (네오 브루탈리스트 3D 월드) -->
   <div id="webgl-container"></div>
 
+  <!-- 상단 실시간 공지사항 배너 (환경 변수 연동) -->
+  <div id="notice-banner" class="brutal-box notice-banner-bar">
+    <div class="banner-left">
+      <span class="banner-badge red"><i class="fa-solid fa-bullhorn"></i> 실시간 공지</span>
+      <span id="env-school-tag" class="banner-school-tag"><i class="fa-solid fa-graduation-cap"></i> <span id="env-school-name">EBS Vibe</span></span>
+      <span id="env-notice-msg" class="banner-message">📢 환영합니다! 깃헙 5대 핵심 페이지 탐험을 시작해보세요.</span>
+    </div>
+    <div class="banner-right">
+      <span id="env-mode-status" class="env-status-pill static" title="배포 환경 및 환경 변수 연동 상태">
+        <span class="status-dot"></span>
+        <span id="env-mode-text">정적 모드 (기본값)</span>
+      </span>
+    </div>
+  </div>
+
   <!-- 상단 글로벌 네비게이션 헤더 (Neo-Brutalism Style) -->
   <header id="main-header" class="brutal-box header-box">
     <div class="brand">
@@ -23,7 +38,10 @@
         <i class="fa-brands fa-github"></i>
       </div>
       <div class="brand-text">
-        <span class="sticker-badge yellow">2026 GITHUB TOUR</span>
+        <div class="brand-badge-row">
+          <span class="sticker-badge yellow"><span id="env-tour-year">2026</span> GITHUB TOUR</span>
+          <span class="sticker-badge green" id="env-school-badge"><i class="fa-solid fa-school"></i> <span id="env-school-name-badge">EBS Vibe</span></span>
+        </div>
         <h1 class="title">친절한 문정쌤과 준오쌤의 깃헙 나라 여행</h1>
       </div>
     </div>
@@ -269,7 +287,7 @@
           <div class="cert-logo-seal">
             <i class="fa-brands fa-github"></i>
           </div>
-          <span class="cert-sub-tag">2026 OFFICIAL GITHUB EXPEDITION</span>
+          <span class="cert-sub-tag"><span id="cert-tour-year">2026</span> OFFICIAL GITHUB EXPEDITION</span>
           <h2 class="cert-hero-title">깃헙 나라 탐험 수료증</h2>
         </div>
 
@@ -297,7 +315,7 @@
         <div class="cert-footer-block">
           <div class="cert-issue-info">
             <span class="cert-date" id="cert-issue-date">2026. 10. 01</span>
-            <span class="cert-org">GitHub Kingdom Education Team</span>
+            <span class="cert-org" id="cert-school-name">EBS Vibe Education Team</span>
           </div>
 
           <div class="cert-mentor-stamps">
